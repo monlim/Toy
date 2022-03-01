@@ -5,11 +5,11 @@ const accelZ = document.getElementById('accelZ');
 function handleMotionEvent(event) {
 
     var x = event.accelerationIncludingGravity.x;
-    accelX.innerHTML = x;
+    accelX.innerHTML = 1;
     var y = event.accelerationIncludingGravity.y;
-    accelY.innerHTML = y;
+    accelY.innerHTML = 2;
     var z = event.accelerationIncludingGravity.z;
-    accelZ.innerHTML = z;
+    accelZ.innerHTML = 3;
 
 }
 
