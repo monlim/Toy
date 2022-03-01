@@ -1,30 +1,64 @@
-DeviceOrientationEvent.requestPermission();
-
-window.addEventListener("deviceorientation", handleOrientation, true);
-
 function handleOrientation(event) {
-  var absolute = event.absolute;
-  var alpha    = event.alpha;
-  var beta     = event.beta;
-  var gamma    = event.gamma;
-  var ballPos = (gamma/90)*200;
-  
-  $('.absolute').html(absolute);
-  $('.alpha').html(alpha.toFixed(3));
-  $('.beta').html(beta.toFixed(3));
-  $('.gamma').html(gamma.toFixed(3));
-  $('.ball').css('transform','translateX(' + ballPos + 'px)');
-  
-  
+  updateFieldIfNotNull('Orientation_a', event.alpha);
+  updateFieldIfNotNull('Orientation_b', event.beta);
+  updateFieldIfNotNull('Orientation_g', event.gamma);
+  incrementEventCount();
 }
 
-window.addEventListener("devicemotion", handleMotion, true);
+function incrementEventCount(){
+  let counterElement = document.getElementById("num-observed-events")
+  let eventCount = parseInt(counterElement.innerHTML)
+  counterElement.innerHTML = eventCount + 1;
+}
+
+function updateFieldIfNotNull(fieldName, value, precision=10){
+  if (value != null)
+    document.getElementById(fieldName).innerHTML = value.toFixed(precision);
+}
 
 function handleMotion(event) {
-  var acceleration = event.acceleration;
-  var interval = event.interval;
-  $('.accelerationx').html(acceleration.x.toFixed(3));
-  $('.accelerationy').html(acceleration.y.toFixed(3));
-  $('.accelerationz').html(acceleration.z.toFixed(3));
-  $('.interval').html(interval);
+  updateFieldIfNotNull('Accelerometer_gx', event.accelerationIncludingGravity.x);
+  updateFieldIfNotNull('Accelerometer_gy', event.accelerationIncludingGravity.y);
+  updateFieldIfNotNull('Accelerometer_gz', event.accelerationIncludingGravity.z);
+
+  updateFieldIfNotNull('Accelerometer_x', event.acceleration.x);
+  updateFieldIfNotNull('Accelerometer_y', event.acceleration.y);
+  updateFieldIfNotNull('Accelerometer_z', event.acceleration.z);
+
+  updateFieldIfNotNull('Accelerometer_i', event.interval, 2);
+
+  updateFieldIfNotNull('Gyroscope_z', event.rotationRate.alpha);
+  updateFieldIfNotNull('Gyroscope_x', event.rotationRate.beta);
+  updateFieldIfNotNull('Gyroscope_y', event.rotationRate.gamma);
+  incrementEventCount();
 }
+
+let is_running = false;
+let demo_button = document.getElementById("start_demo");
+demo_button.onclick = function(e) {
+  e.preventDefault();
+  
+  // Request permission for iOS 13+ devices
+  if (
+    DeviceMotionEvent &&
+    typeof DeviceMotionEvent.requestPermission === "function"
+  ) {
+    DeviceMotionEvent.requestPermission();
+  }
+  
+  if (is_running){
+    window.removeEventListener("devicemotion", handleMotion);
+    window.removeEventListener("deviceorientation", handleOrientation);
+    demo_button.innerHTML = "Start demo";
+    demo_button.classList.add('btn-success');
+    demo_button.classList.remove('btn-danger');
+    is_running = false;
+  }else{
+    window.addEventListener("devicemotion", handleMotion);
+    window.addEventListener("deviceorientation", handleOrientation);
+    document.getElementById("start_demo").innerHTML = "Stop demo";
+    demo_button.classList.remove('btn-success');
+    demo_button.classList.add('btn-danger');
+    is_running = true;
+  }
+};
