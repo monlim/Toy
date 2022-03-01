@@ -1,3 +1,5 @@
+DeviceOrientationEvent.requestPermission();
+
 window.addEventListener("deviceorientation", handleOrientation, true);
 
 function handleOrientation(event) {
