@@ -1,17 +1,28 @@
-const accelX = document.getElementById('accelX');
-const accelY = document.getElementById('accelY');
-const accelZ = document.getElementById('accelZ');
+window.addEventListener("deviceorientation", handleOrientation, true);
 
-function handleMotionEvent(event) {
-
-    var x = event.accelerationIncludingGravity.x;
-    accelX.innerHTML = 1;
-    var y = event.accelerationIncludingGravity.y;
-    accelY.innerHTML = 2;
-    var z = event.accelerationIncludingGravity.z;
-    accelZ.innerHTML = 3;
-
+function handleOrientation(event) {
+  var absolute = event.absolute;
+  var alpha    = event.alpha;
+  var beta     = event.beta;
+  var gamma    = event.gamma;
+  var ballPos = (gamma/90)*200;
+  
+  $('.absolute').html(absolute);
+  $('.alpha').html(alpha.toFixed(3));
+  $('.beta').html(beta.toFixed(3));
+  $('.gamma').html(gamma.toFixed(3));
+  $('.ball').css('transform','translateX(' + ballPos + 'px)');
+  
+  
 }
 
-window.addEventListener("devicemotion", handleMotionEvent, true);
+window.addEventListener("devicemotion", handleMotion, true);
 
+function handleMotion(event) {
+  var acceleration = event.acceleration;
+  var interval = event.interval;
+  $('.accelerationx').html(acceleration.x.toFixed(3));
+  $('.accelerationy').html(acceleration.y.toFixed(3));
+  $('.accelerationz').html(acceleration.z.toFixed(3));
+  $('.interval').html(interval);
+}
