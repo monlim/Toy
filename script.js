@@ -2,14 +2,14 @@ function handleOrientation(event) {
   updateFieldIfNotNull('Orientation_a', event.alpha);
   updateFieldIfNotNull('Orientation_b', event.beta);
   updateFieldIfNotNull('Orientation_g', event.gamma);
-  incrementEventCount();
+  //incrementEventCount();
 }
 
-function incrementEventCount(){
+/*function incrementEventCount(){
   let counterElement = document.getElementById("num-observed-events")
   let eventCount = parseInt(counterElement.innerHTML)
   counterElement.innerHTML = eventCount + 1;
-}
+}*/
 
 function updateFieldIfNotNull(fieldName, value, precision=10){
   if (value != null)
