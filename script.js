@@ -1,3 +1,19 @@
+//Reset audio context
+document.documentElement.addEventListener('mousedown', () => {
+  if (Tone.context.state !== 'running') Tone.context.resume();
+});
+
+//const osc = new Tone.Oscillator(440, "sine").toDestination();
+
+const synth = new Tone.MonoSynth({
+	oscillator: {
+		type: "square"
+	},
+	envelope: {
+		attack: 0.1
+	}
+}).toDestination();
+
 function handleOrientation(event) {
   updateFieldIfNotNull('Orientation_a', event.alpha);
   updateFieldIfNotNull('Orientation_b', event.beta);
@@ -22,6 +38,11 @@ function handleMotion(event) {
   updateFieldIfNotNull('Accelerometer_gz', event.accelerationIncludingGravity.z);
 
   updateFieldIfNotNull('Accelerometer_x', event.acceleration.x);
+  /*if (event.acceleration.x > 1){
+    osc.start()
+  } else {
+    osc.stop()
+  };*/
   updateFieldIfNotNull('Accelerometer_y', event.acceleration.y);
   updateFieldIfNotNull('Accelerometer_z', event.acceleration.z);
 
@@ -49,16 +70,33 @@ demo_button.onclick = function(e) {
   if (is_running){
     window.removeEventListener("devicemotion", handleMotion);
     window.removeEventListener("deviceorientation", handleOrientation);
-    demo_button.innerHTML = "Start demo";
-    demo_button.classList.add('btn-success');
-    demo_button.classList.remove('btn-danger');
+    demo_button.innerHTML = "Start";
+    //demo_button.classList.add('btn-success');
+    //demo_button.classList.remove('btn-danger');
     is_running = false;
   }else{
     window.addEventListener("devicemotion", handleMotion);
     window.addEventListener("deviceorientation", handleOrientation);
-    document.getElementById("start_demo").innerHTML = "Stop demo";
-    demo_button.classList.remove('btn-success');
-    demo_button.classList.add('btn-danger');
+    document.getElementById("start_demo").innerHTML = "Stop";
+    //demo_button.classList.remove('btn-success');
+    //demo_button.classList.add('btn-danger');
     is_running = true;
   }
 };
+
+var myShakeEvent = new Shake({
+    threshold: 10, // optional shake strength threshold
+    timeout: 1000 // optional, determines the frequency of event generation
+});
+
+// Start listening to device motion
+myShakeEvent.start(); 
+
+// Register a shake event listener on window with your callback
+window.addEventListener('shake', shakeEventDidOccur, false); 
+
+//function to call when shake occurs
+function shakeEventDidOccur () {
+  synth.triggerAttackRelease("C4", "8n");
+  //alert('shake!');
+}
