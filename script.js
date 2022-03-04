@@ -3,23 +3,30 @@ document.documentElement.addEventListener('mousedown', () => {
   if (Tone.context.state !== 'running') Tone.context.resume();
 });
 
-//const osc = new Tone.Oscillator(440, "sine").toDestination();
+const Cough1 = new Tone.Player("https://monlim.github.io/AccelTrial/Audio/Cough1.mp3").toDestination();
+const Cough2 = new Tone.Player("https://monlim.github.io/AccelTrial/Audio/Cough2.mp3").toDestination();
+const Cough3 = new Tone.Player("https://monlim.github.io/AccelTrial/Audio/Cough3.mp3").toDestination();
+const Cough4 = new Tone.Player("https://monlim.github.io/AccelTrial/Audio/Cough4.mp3").toDestination();
+const Cough5 = new Tone.Player("https://monlim.github.io/AccelTrial/Audio/Cough5.mp3").toDestination();
+const Ring1 = new Tone.Player("https://monlim.github.io/AccelTrial/Audio/Ring1.mp3").toDestination();
+const Ring2 = new Tone.Player("https://monlim.github.io/AccelTrial/Audio/Ring2.mp3").toDestination();
+const Ring3 = new Tone.Player("https://monlim.github.io/AccelTrial/Audio/Ring3.mp3").toDestination();
+const Ring4 = new Tone.Player("https://monlim.github.io/AccelTrial/Audio/Ring4.mp3").toDestination();
+const Ring5 = new Tone.Player("https://monlim.github.io/AccelTrial/Audio/Ring5.mp3").toDestination();
+const gainNode = new Tone.Gain(0).toDestination();
+const ToyPiano = new Tone.GrainPlayer("https://monlim.github.io/AccelTrial/Audio/ToyPiano.mp3").connect(gainNode);
+ToyPiano.loop = true;
 
-const synth = new Tone.MonoSynth({
-	oscillator: {
-		type: "square"
-	},
-	envelope: {
-		attack: 0.1
-	}
-}).toDestination();
+const shakeDict = {1: Ring1, 2: Ring2, 3: Ring3, 4: Ring5, 5: Cough1, 6: Cough2, 7: Cough3, 8: Cough4, 9: Ring1, 10: Ring1, 11: Ring2, 12: Ring2, 13: Ring4, 14: Ring4, 15: Ring4, 16: Cough1, 17: Cough1, 18: Cough3, 19: Cough3, 20: Cough4, 21: Cough4, 22: Cough1, 23: Ring1, 25: Cough5, 26: Cough5};
 
 function handleOrientation(event) {
   updateFieldIfNotNull('Orientation_a', event.alpha);
   updateFieldIfNotNull('Orientation_b', event.beta);
   updateFieldIfNotNull('Orientation_g', event.gamma);
+  ToyPiano.loopStart = scaleValue(event.alpha, [-180, 180], [0, 23]);
+  
   //incrementEventCount();
-}
+};
 
 /*function incrementEventCount(){
   let counterElement = document.getElementById("num-observed-events")
@@ -30,28 +37,28 @@ function handleOrientation(event) {
 function updateFieldIfNotNull(fieldName, value, precision=10){
   if (value != null)
     document.getElementById(fieldName).innerHTML = value.toFixed(precision);
-}
+};
+
+let accel;
 
 function handleMotion(event) {
   updateFieldIfNotNull('Accelerometer_gx', event.accelerationIncludingGravity.x);
   updateFieldIfNotNull('Accelerometer_gy', event.accelerationIncludingGravity.y);
   updateFieldIfNotNull('Accelerometer_gz', event.accelerationIncludingGravity.z);
-
   updateFieldIfNotNull('Accelerometer_x', event.acceleration.x);
-  /*if (event.acceleration.x > 1){
-    osc.start()
-  } else {
-    osc.stop()
-  };*/
   updateFieldIfNotNull('Accelerometer_y', event.acceleration.y);
   updateFieldIfNotNull('Accelerometer_z', event.acceleration.z);
+  
+  accel = event.acceleration.x**2 + event.acceleration.y**2 + event.acceleration.z**2;
+  updateFieldIfNotNull('All', accel);
+  gainNode.gain.rampTo(powerScale(accel), 0.05);  
 
   updateFieldIfNotNull('Accelerometer_i', event.interval, 2);
 
   updateFieldIfNotNull('Gyroscope_z', event.rotationRate.alpha);
   updateFieldIfNotNull('Gyroscope_x', event.rotationRate.beta);
   updateFieldIfNotNull('Gyroscope_y', event.rotationRate.gamma);
-  incrementEventCount();
+  //incrementEventCount();
 }
 
 let is_running = false;
@@ -70,33 +77,44 @@ demo_button.onclick = function(e) {
   if (is_running){
     window.removeEventListener("devicemotion", handleMotion);
     window.removeEventListener("deviceorientation", handleOrientation);
+    window.removeEventListener('shake', shakeEventDidOccur, false); 
     demo_button.innerHTML = "Start";
     //demo_button.classList.add('btn-success');
     //demo_button.classList.remove('btn-danger');
+    myShakeEvent.stop();
+    ToyPiano.stop();
     is_running = false;
   }else{
     window.addEventListener("devicemotion", handleMotion);
     window.addEventListener("deviceorientation", handleOrientation);
+    window.addEventListener('shake', shakeEventDidOccur, false); 
     document.getElementById("start_demo").innerHTML = "Stop";
     //demo_button.classList.remove('btn-success');
     //demo_button.classList.add('btn-danger');
+    myShakeEvent.start();
+    ToyPiano.start();
     is_running = true;
   }
 };
+
+function scaleValue(value, from, to) {
+  let scale = (to[1] - to[0]) / (from[1] - from[0]);
+  let capped = Math.min(from[1], Math.max(from[0], value)) - from[0];
+  return (capped * scale + to[0]);
+};
+
+//exponential scale
+let powerScale = d3.scalePow()
+  .exponent(1.5).domain([0, 6]).range([0, 1]).clamp(true);
 
 var myShakeEvent = new Shake({
     threshold: 10, // optional shake strength threshold
     timeout: 1000 // optional, determines the frequency of event generation
 });
 
-// Start listening to device motion
-myShakeEvent.start(); 
-
-// Register a shake event listener on window with your callback
-window.addEventListener('shake', shakeEventDidOccur, false); 
-
 //function to call when shake occurs
 function shakeEventDidOccur () {
-  synth.triggerAttackRelease("C4", "8n");
+  shakeDict[Math.floor(Math.random() * 27)].start();
+  shakeDict[Math.floor(Math.random() * 27)].playbackRate = (scaleValue(accel, [10, 30], [1.8, 0.7]));
   //alert('shake!');
-}
+};
