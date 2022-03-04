@@ -23,8 +23,9 @@ function handleOrientation(event) {
   updateFieldIfNotNull('Orientation_a', event.alpha);
   updateFieldIfNotNull('Orientation_b', event.beta);
   updateFieldIfNotNull('Orientation_g', event.gamma);
-  ToyPiano.playbackRate = scaleValue(event.alpha, [-180, 180], [0.5, 1]);
-  //ToyPiano.detune = scaleValue(event.alpha, [-180, 180], [200, 0]);
+  //ToyPiano.playbackRate = scaleValue(event.alpha, [-180, 180], [0.5, 1]);
+  ToyPiano.detune = scaleValue(event.alpha, [-180, 180], [200, 0]);
+  ToyPiano.grainSize = scaleValue(event.beta, [-180, 180], [0.1, 0.8]);
   
   //incrementEventCount();
 };
