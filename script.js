@@ -25,7 +25,7 @@ function handleOrientation(event) {
   updateFieldIfNotNull('Orientation_g', event.gamma);
   //ToyPiano.playbackRate = scaleValue(event.alpha, [-180, 180], [0.5, 1]);
   ToyPiano.detune = scaleValue(event.alpha, [-180, 180], [200, 0]);
-  ToyPiano.grainSize = scaleValue(event.beta, [-180, 180], [0.1, 0.8]);
+  ToyPiano.grainSize = scaleValue(event.beta, [-180, 180], [0.1, 1.5]);
   
   //incrementEventCount();
 };
@@ -107,7 +107,7 @@ function scaleValue(value, from, to) {
 
 //exponential scale
 let powerScale = d3.scalePow()
-  .exponent(1.5).domain([0, 6]).range([0, 1]).clamp(true);
+  .exponent(1.5).domain([0, 8]).range([0, 1]).clamp(true);
 
 var myShakeEvent = new Shake({
     threshold: 10, // optional shake strength threshold
