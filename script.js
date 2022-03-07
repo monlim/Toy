@@ -33,7 +33,7 @@ function handleOrientation(event) {
   updateFieldIfNotNull('Orientation_b', event.beta);
   updateFieldIfNotNull('Orientation_g', event.gamma);
   //ToyPiano.grainSize = scaleValue(event.alpha, [-180, 180], [0.1, 1]);
-  pitchShift.pitch = scaleValue(event.beta, [0, 180], [0, 16]);
+  pitchShift.pitch = Math.floor(scaleValue(event.beta, [0, 180], [0, 16]));
   
   //incrementEventCount();
 }
