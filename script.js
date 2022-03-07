@@ -10,25 +10,32 @@ const Cough4 = new Tone.Player("https://monlim.github.io/AccelTrial/Audio/Cough4
 const Cough5 = new Tone.Player("https://monlim.github.io/AccelTrial/Audio/Cough5.mp3").toDestination();
 const Ring1 = new Tone.Player("https://monlim.github.io/AccelTrial/Audio/Ring1.mp3").toDestination();
 const Ring2 = new Tone.Player("https://monlim.github.io/AccelTrial/Audio/Ring2.mp3").toDestination();
-const Ring3 = new Tone.Player("https://monlim.github.io/AccelTrial/Audio/Ring3.mp3").toDestination();
+const Ring3 = new Tone.Player("https://monlim.github.io/AccelTrial/Audio/RingSsh.mp3").toDestination();
 const Ring4 = new Tone.Player("https://monlim.github.io/AccelTrial/Audio/Ring4.mp3").toDestination();
 const Ring5 = new Tone.Player("https://monlim.github.io/AccelTrial/Audio/Ring5.mp3").toDestination();
-const gainNode = new Tone.Gain(0).toDestination();
+const Orn1 = new Tone.Player("https://monlim.github.io/AccelTrial/Audio/Orn1.mp3").toDestination();
+const Orn2 = new Tone.Player("https://monlim.github.io/AccelTrial/Audio/Orn2.mp3").toDestination();
+const pitchShift = new Tone.PitchShift(0).toDestination();
+const GA = new Tone.Player("https://monlim.github.io/AccelTrial/Audio/GA1.mp3").connect(pitchShift);
+/*const gainNode = new Tone.Gain(0).toDestination();
 const ToyPiano = new Tone.GrainPlayer("https://monlim.github.io/AccelTrial/Audio/ToyPiano.mp3").connect(gainNode);
-ToyPiano.loop = true;
+ToyPiano.loop = true;*/
 
-const shakeDict = {1: Ring1, 2: Ring2, 3: Ring3, 4: Ring5, 5: Cough1, 6: Cough2, 7: Cough3, 8: Cough4, 9: Ring1, 10: Ring1, 11: Ring2, 12: Ring2, 13: Ring4, 14: Ring4, 15: Ring4, 16: Cough1, 17: Cough1, 18: Cough3, 19: Cough3, 20: Cough4, 21: Cough4, 22: Cough1, 23: Ring1, 25: Cough5, 26: Cough5};
+const shakeDict1 = {1: Ring1, 2: Ring2, 3: Ring3, 4: Ring5, 5: Cough1, 6: Cough2, 7: Cough3, 8: Cough4, 9: Ring1, 10: Ring1, 11: Ring2, 12: Ring2, 13: Ring4, 14: Ring4, 15: Ring4, 16: Cough1, 17: Cough1, 18: Cough3, 19: Cough3, 20: Cough4, 21: Cough4, 22: Cough1, 23: Ring1, 25: Cough5, 26: Cough5};
+
+const shakeDict2 = {1: Orn1, 2: Orn2, 3: Orn1, 4: Orn2, 5: Orn1, 6: Orn2, 7: Orn1, 8: Orn2, 9: Orn2, 10: Orn2, 11: Orn1, 12: Orn2, 13: Orn1, 14: Orn2, 15: Orn1, 16: Orn2, 17: Orn1, 18: Orn1, 19: Orn1, 20: Orn2, 21: Orn1, 22: Orn1, 23: Orn1, 25: Orn2, 26: Orn2};
+
+let shakeDict = shakeDict1; // default sounds on start
 
 function handleOrientation(event) {
   updateFieldIfNotNull('Orientation_a', event.alpha);
   updateFieldIfNotNull('Orientation_b', event.beta);
   updateFieldIfNotNull('Orientation_g', event.gamma);
-  //ToyPiano.playbackRate = scaleValue(event.alpha, [-180, 180], [0.5, 1]);
-  ToyPiano.detune = scaleValue(event.alpha, [-180, 180], [200, 0]);
-  ToyPiano.grainSize = scaleValue(event.beta, [-180, 180], [0.1, 1.5]);
+  //ToyPiano.grainSize = scaleValue(event.alpha, [-180, 180], [0.1, 1]);
+  pitchShift.pitch = scaleValue(event.beta, [0, 180], [0, 16]);
   
   //incrementEventCount();
-};
+}
 
 /*function incrementEventCount(){
   let counterElement = document.getElementById("num-observed-events")
@@ -39,7 +46,7 @@ function handleOrientation(event) {
 function updateFieldIfNotNull(fieldName, value, precision=10){
   if (value != null)
     document.getElementById(fieldName).innerHTML = value.toFixed(precision);
-};
+}
 
 let accel;
 
@@ -53,7 +60,10 @@ function handleMotion(event) {
   
   accel = event.acceleration.x**2 + event.acceleration.y**2 + event.acceleration.z**2;
   updateFieldIfNotNull('All', accel);
-  gainNode.gain.rampTo(powerScale(accel), 0.05);  
+  GA.volume.value = scaleValue(accel, [0, 5], [-12, 0]);
+  //gainNode.gain.rampTo(powerScale(accel), 0.05);  
+  //ToyPiano.grainSize = scaleValue(event.acceleration.x, [0.5, 1], [0.1, 0.5]);
+  
 
   updateFieldIfNotNull('Accelerometer_i', event.interval, 2);
 
@@ -84,9 +94,15 @@ demo_button.onclick = function(e) {
     //demo_button.classList.add('btn-success');
     //demo_button.classList.remove('btn-danger');
     myShakeEvent.stop();
-    ToyPiano.stop();
+    GA.stop();
+    shakeDict = shakeDict1;
+    //ToyPiano.stop();
     is_running = false;
   }else{
+    setTimeout(function(){
+      shakeDict = shakeDict2;
+      GA.start();
+    }, 30000);
     window.addEventListener("devicemotion", handleMotion);
     window.addEventListener("deviceorientation", handleOrientation);
     window.addEventListener('shake', shakeEventDidOccur, false); 
@@ -94,7 +110,7 @@ demo_button.onclick = function(e) {
     //demo_button.classList.remove('btn-success');
     //demo_button.classList.add('btn-danger');
     myShakeEvent.start();
-    ToyPiano.start();
+    //ToyPiano.start();
     is_running = true;
   }
 };
@@ -103,11 +119,11 @@ function scaleValue(value, from, to) {
   let scale = (to[1] - to[0]) / (from[1] - from[0]);
   let capped = Math.min(from[1], Math.max(from[0], value)) - from[0];
   return (capped * scale + to[0]);
-};
+}
 
 //exponential scale
 let powerScale = d3.scalePow()
-  .exponent(1.5).domain([0, 8]).range([0, 1]).clamp(true);
+  .exponent(1.4).domain([0, 6]).range([0, 1]).clamp(true);
 
 var myShakeEvent = new Shake({
     threshold: 10, // optional shake strength threshold
@@ -117,6 +133,6 @@ var myShakeEvent = new Shake({
 //function to call when shake occurs
 function shakeEventDidOccur () {
   shakeDict[Math.floor(Math.random() * 27)].start();
-  shakeDict[Math.floor(Math.random() * 27)].playbackRate = (scaleValue(accel, [10, 30], [1.8, 0.7]));
+  //shakeDict[Math.floor(Math.random() * 27)].playbackRate = (scaleValue(accel, [10, 30], [1.8, 0.7]));
   //alert('shake!');
-};
+}
