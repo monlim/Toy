@@ -17,6 +17,7 @@ const Orn1 = new Tone.Player("https://monlim.github.io/AccelTrial/Audio/Orn1.mp3
 const Orn2 = new Tone.Player("https://monlim.github.io/AccelTrial/Audio/Orn2.mp3").toDestination();
 const pitchShift = new Tone.PitchShift(0).toDestination();
 const GA = new Tone.Player("https://monlim.github.io/AccelTrial/Audio/GA1.mp3").connect(pitchShift);
+GA.loop = true;
 /*const gainNode = new Tone.Gain(0).toDestination();
 const ToyPiano = new Tone.GrainPlayer("https://monlim.github.io/AccelTrial/Audio/ToyPiano.mp3").connect(gainNode);
 ToyPiano.loop = true;*/
@@ -60,7 +61,7 @@ function handleMotion(event) {
   
   accel = event.acceleration.x**2 + event.acceleration.y**2 + event.acceleration.z**2;
   updateFieldIfNotNull('All', accel);
-  GA.volume.value = scaleValue(accel, [0, 5], [-12, 0]);
+  GA.volume.value = scaleValue(accel, [0, 5], [-24, 0]);
   //gainNode.gain.rampTo(powerScale(accel), 0.05);  
   //ToyPiano.grainSize = scaleValue(event.acceleration.x, [0.5, 1], [0.1, 0.5]);
   
