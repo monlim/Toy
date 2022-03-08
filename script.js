@@ -34,12 +34,11 @@ function handleOrientation(event) {
   updateFieldIfNotNull('Orientation_g', event.gamma);
   //ToyPiano.grainSize = scaleValue(event.alpha, [-180, 180], [0.1, 1]);
   //pitchShift.pitch = Math.floor(scaleValue(event.beta, [0, 180], [0, 16]));
-  if (event.beta < 10) pitchShift.pitch = 0;
-  if (10 <= event.beta < 30) pitchShift.pitch = 4;
-  if (30 <= event.beta < 60) pitchShift.pitch = 7;
-  if (60 <= event.beta < 100) pitchShift.pitch = 12;
-  if (100 <= event.beta) pitchShift.pitch = 16;
-  GA.volume.value = scaleValue(event.alpha, [0, 180], [-24, 0]);
+  if (event.beta < 10) pitchShift.pitch = 0
+  else if (10 <= event.beta && event.beta < 30) pitchShift.pitch = 4
+  else if (30 <= event.beta && event.beta < 60) pitchShift.pitch = 7
+  else if (60 <= event.beta && event.beta < 100) pitchShift.pitch = 12
+  else pitchShift.pitch = 16;
   
   //incrementEventCount();
 }
@@ -65,9 +64,9 @@ function handleMotion(event) {
   updateFieldIfNotNull('Accelerometer_y', event.acceleration.y);
   updateFieldIfNotNull('Accelerometer_z', event.acceleration.z);
   
-  //accel = event.acceleration.x**2 + event.acceleration.y**2 + event.acceleration.z**2;
+  accel = event.acceleration.x**2 + event.acceleration.y**2 + event.acceleration.z**2;
   updateFieldIfNotNull('All', accel);
-  //GA.volume.value = scaleValue(accel, [0, 5], [-24, 0]);
+  GA.volume.value = scaleValue(accel, [0, 5], [-24, 0]);
  
   
   
