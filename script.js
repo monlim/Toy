@@ -107,8 +107,10 @@ demo_button.onclick = function(e) {
   }else{
     setTimeout(function(){
       shakeDict = shakeDict2;
-      GA.start();
     }, 30000);
+    setTimeout(function(){
+      GA.start();
+    }, 40000);
     window.addEventListener("devicemotion", handleMotion);
     window.addEventListener("deviceorientation", handleOrientation);
     window.addEventListener('shake', shakeEventDidOccur, false); 
