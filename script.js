@@ -39,6 +39,7 @@ function handleOrientation(event) {
   if (30 <= event.beta && event.beta < 60) pitchShift.pitch = 7;
   if (60 <= event.beta && event.beta < 100) pitchShift.pitch = 12;
   if (event.beta >= 100) pitchShift.pitch = 16;
+  if (event.beta > 0) {GA.stop()} else {GA.start()};
   
   //incrementEventCount();
 }
