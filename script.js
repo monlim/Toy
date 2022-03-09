@@ -22,11 +22,11 @@ const sampler = new Tone.Sampler({
 	},
 	baseUrl: "https://monlim.github.io/AccelTrial/Audio/",
 	}
-}).toDestination();
+).toDestination();
 const pitchShift = new Tone.PitchShift(0);
-const gain = new Tone.Gain.toDestination();
+const gainNode = new Tone.Gain(0).toDestination();
 const GA = new Tone.Player("https://monlim.github.io/AccelTrial/Audio/GA1.mp3");
-GA.chain(pitchShift, gain);
+GA.chain(pitchShift, gainNode);
 GA.loop = true;
 
 const shakeDict1 = {1: Ring1, 2: Ring2, 3: Ring3, 4: Ring5, 5: Cough1, 6: Cough2, 7: Cough3, 8: Cough4, 9: Ring1, 10: Ring1, 11: Ring2, 12: Ring2, 13: Ring4, 14: Ring4, 15: Ring4, 16: Cough1, 17: Cough1, 18: Cough3, 19: Cough3, 20: Cough4, 21: Cough4, 22: Cough1, 23: Ring1, 25: Cough5, 26: Cough5};
