@@ -15,6 +15,14 @@ const Ring4 = new Tone.Player("https://monlim.github.io/AccelTrial/Audio/Ring4.m
 const Ring5 = new Tone.Player("https://monlim.github.io/AccelTrial/Audio/Ring5.mp3").toDestination();
 const Orn1 = new Tone.Player("https://monlim.github.io/AccelTrial/Audio/Orn1.mp3").toDestination();
 const Orn2 = new Tone.Player("https://monlim.github.io/AccelTrial/Audio/Orn2.mp3").toDestination();
+const sampler = new Tone.Sampler({
+	urls: {
+		G4: "G.mp3",
+		C5: "C.mp3",
+	},
+	baseUrl: "https://monlim.github.io/AccelTrial/Audio/",
+	}
+}).toDestination();
 const pitchShift = new Tone.PitchShift(0);
 const gain = new Tone.Gain.toDestination();
 const GA = new Tone.Player("https://monlim.github.io/AccelTrial/Audio/GA1.mp3");
@@ -41,6 +49,11 @@ function handleOrientation(event) {
   if (30 <= event.beta && event.beta < 60) pitchShift.pitch = 7;
   if (60 <= event.beta && event.beta < 100) pitchShift.pitch = 12;
   if (event.beta >= 100) pitchShift.pitch = 16;
+  if (accel > 2 && event.alpha >= 0 && event.alpha < 30) sampler.triggerAttackRelease(["G4"], 1);
+  if (accel > 2 && event.alpha >= 30 && event.alpha < 60) sampler.triggerAttackRelease(["A5"], 1);
+  if (accel > 2 && event.alpha >= 60 && event.alpha < 100) sampler.triggerAttackRelease(["B5"], 1);
+  if (accel > 2 && event.alpha >= 100 && event.alpha < 180) sampler.triggerAttackRelease(["C5"], 1);
+  if (accel > 2 && event.alpha < 0) sampler.triggerAttackRelease(["D5"], 1);
   
   //incrementEventCount();
 }
@@ -69,10 +82,7 @@ function handleMotion(event) {
   accel = event.acceleration.x**2 + event.acceleration.y**2 + event.acceleration.z**2;
   updateFieldIfNotNull('All', accel);
   GA.volume.value = scaleValue(accel, [0, 6], [-24, 0]);
- 
   
-  
-
   updateFieldIfNotNull('Accelerometer_i', event.interval, 2);
 
   updateFieldIfNotNull('Gyroscope_z', event.rotationRate.alpha);
@@ -112,6 +122,7 @@ demo_button.onclick = function(e) {
     }, 30000);
     setTimeout(function(){
       GA.start();
+      sampler.disconnect();
     }, 40000);
     setTimeout(function(){
       gainNode.gain.rampTo(0, 3);
@@ -123,6 +134,8 @@ demo_button.onclick = function(e) {
     //demo_button.classList.remove('btn-success');
     //demo_button.classList.add('btn-danger');
     myShakeEvent.start();
+    gainNode.gain.rampTo(1, 0.1);
+    sampler.toDestination();
     //ToyPiano.start();
     is_running = true;
   }
