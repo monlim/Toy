@@ -17,8 +17,8 @@ const Orn1 = new Tone.Player("https://monlim.github.io/AccelTrial/Audio/Orn1.mp3
 const Orn2 = new Tone.Player("https://monlim.github.io/AccelTrial/Audio/Orn2.mp3").toDestination();
 const sampler = new Tone.Sampler({
 	urls: {
-		G4: "G.mp3",
-		C5: "C.mp3",
+		C4: "G.mp3",
+		F4: "C.mp3",
 	},
 	baseUrl: "https://monlim.github.io/AccelTrial/Audio/",
 	}
@@ -44,11 +44,6 @@ function handleOrientation(event) {
   if (30 <= event.beta && event.beta < 60) pitchShift.pitch = 7;
   if (60 <= event.beta && event.beta < 100) pitchShift.pitch = 12;
   if (event.beta >= 100) pitchShift.pitch = 16;
-  if (accel > 2 && event.alpha >= 0 && event.alpha < 30) sampler.triggerAttackRelease(["G4"], 1);
-  if (accel > 2 && event.alpha >= 30 && event.alpha < 60) sampler.triggerAttackRelease(["A5"], 1);
-  if (accel > 2 && event.alpha >= 60 && event.alpha < 100) sampler.triggerAttackRelease(["B5"], 1);
-  if (accel > 2 && event.alpha >= 100 && event.alpha < 180) sampler.triggerAttackRelease(["C5"], 1);
-  if (accel > 2 && event.alpha < 0) sampler.triggerAttackRelease(["D5"], 1);
   
   //incrementEventCount();
 }
@@ -77,6 +72,8 @@ function handleMotion(event) {
   accel = event.acceleration.x**2 + event.acceleration.y**2 + event.acceleration.z**2;
 //   updateFieldIfNotNull('All', accel);
   GA.volume.value = scaleValue(accel, [0, 6], [-24, 0]);
+  let samplerNotes = ['C4', 'D4', 'E4', 'F4', 'G4'];
+  if (accel > 2) sampler.triggerAttackRelease([samplerNotes[Math.random(5)]], 0.5);	
   
 //   updateFieldIfNotNull('Accelerometer_i', event.interval, 2);
 
