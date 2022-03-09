@@ -15,14 +15,6 @@ const Ring4 = new Tone.Player("https://monlim.github.io/AccelTrial/Audio/Ring4.m
 const Ring5 = new Tone.Player("https://monlim.github.io/AccelTrial/Audio/Ring5.mp3").toDestination();
 const Orn1 = new Tone.Player("https://monlim.github.io/AccelTrial/Audio/Orn1.mp3").toDestination();
 const Orn2 = new Tone.Player("https://monlim.github.io/AccelTrial/Audio/Orn2.mp3").toDestination();
-const sampler = new Tone.Sampler({
-	urls: {
-		C4: "G.mp3",
-		F4: "C.mp3",
-	},
-	baseUrl: "https://monlim.github.io/AccelTrial/Audio/",
-	}
-).toDestination();
 const pitchShift = new Tone.PitchShift(0);
 const gainNode = new Tone.Gain(0).toDestination();
 const GA = new Tone.Player("https://monlim.github.io/AccelTrial/Audio/GA1.mp3");
@@ -72,8 +64,6 @@ function handleMotion(event) {
   accel = event.acceleration.x**2 + event.acceleration.y**2 + event.acceleration.z**2;
 //   updateFieldIfNotNull('All', accel);
   GA.volume.value = scaleValue(accel, [0, 6], [-24, 0]);
-  let samplerNotes = ['C4', 'D4', 'E4', 'F4', 'G4'];
-  if (accel > 2) sampler.triggerAttackRelease([samplerNotes[Math.random(5)]], 0.5);	
   
 //   updateFieldIfNotNull('Accelerometer_i', event.interval, 2);
 
