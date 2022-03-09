@@ -28,9 +28,6 @@ const gain = new Tone.Gain.toDestination();
 const GA = new Tone.Player("https://monlim.github.io/AccelTrial/Audio/GA1.mp3");
 GA.chain(pitchShift, gain);
 GA.loop = true;
-/*const gainNode = new Tone.Gain(1).toDestination();
-const ToyPiano = new Tone.GrainPlayer("https://monlim.github.io/AccelTrial/Audio/ToyPiano.mp3").connect(gainNode);
-ToyPiano.loop = true;*/
 
 const shakeDict1 = {1: Ring1, 2: Ring2, 3: Ring3, 4: Ring5, 5: Cough1, 6: Cough2, 7: Cough3, 8: Cough4, 9: Ring1, 10: Ring1, 11: Ring2, 12: Ring2, 13: Ring4, 14: Ring4, 15: Ring4, 16: Cough1, 17: Cough1, 18: Cough3, 19: Cough3, 20: Cough4, 21: Cough4, 22: Cough1, 23: Ring1, 25: Cough5, 26: Cough5};
 
@@ -39,11 +36,9 @@ const shakeDict2 = {1: Orn1, 2: Orn2, 3: Orn1, 4: Orn2, 5: Orn1, 6: Orn2, 7: Orn
 let shakeDict = shakeDict1; // default sounds on start
 
 function handleOrientation(event) {
-  updateFieldIfNotNull('Orientation_a', event.alpha);
-  updateFieldIfNotNull('Orientation_b', event.beta);
-  updateFieldIfNotNull('Orientation_g', event.gamma);
-  //ToyPiano.grainSize = scaleValue(event.alpha, [-180, 180], [0.1, 1]);
-  //pitchShift.pitch = Math.floor(scaleValue(event.beta, [0, 180], [0, 16]));
+//   updateFieldIfNotNull('Orientation_a', event.alpha);
+//   updateFieldIfNotNull('Orientation_b', event.beta);
+//   updateFieldIfNotNull('Orientation_g', event.gamma);
   if (event.beta < 10) pitchShift.pitch = 0;
   if (10 <= event.beta && event.beta < 30) pitchShift.pitch = 4;
   if (30 <= event.beta && event.beta < 60) pitchShift.pitch = 7;
@@ -64,30 +59,30 @@ function handleOrientation(event) {
   counterElement.innerHTML = eventCount + 1;
 }*/
 
-function updateFieldIfNotNull(fieldName, value, precision=10){
-  if (value != null)
-    document.getElementById(fieldName).innerHTML = value.toFixed(precision);
-}
+// function updateFieldIfNotNull(fieldName, value, precision=10){
+//   if (value != null)
+//     document.getElementById(fieldName).innerHTML = value.toFixed(precision);
+// }
 
 let accel;
 
 function handleMotion(event) {
-  updateFieldIfNotNull('Accelerometer_gx', event.accelerationIncludingGravity.x);
-  updateFieldIfNotNull('Accelerometer_gy', event.accelerationIncludingGravity.y);
-  updateFieldIfNotNull('Accelerometer_gz', event.accelerationIncludingGravity.z);
-  updateFieldIfNotNull('Accelerometer_x', event.acceleration.x);
-  updateFieldIfNotNull('Accelerometer_y', event.acceleration.y);
-  updateFieldIfNotNull('Accelerometer_z', event.acceleration.z);
+//   updateFieldIfNotNull('Accelerometer_gx', event.accelerationIncludingGravity.x);
+//   updateFieldIfNotNull('Accelerometer_gy', event.accelerationIncludingGravity.y);
+//   updateFieldIfNotNull('Accelerometer_gz', event.accelerationIncludingGravity.z);
+//   updateFieldIfNotNull('Accelerometer_x', event.acceleration.x);
+//   updateFieldIfNotNull('Accelerometer_y', event.acceleration.y);
+//   updateFieldIfNotNull('Accelerometer_z', event.acceleration.z);
   
   accel = event.acceleration.x**2 + event.acceleration.y**2 + event.acceleration.z**2;
-  updateFieldIfNotNull('All', accel);
+//   updateFieldIfNotNull('All', accel);
   GA.volume.value = scaleValue(accel, [0, 6], [-24, 0]);
   
-  updateFieldIfNotNull('Accelerometer_i', event.interval, 2);
+//   updateFieldIfNotNull('Accelerometer_i', event.interval, 2);
 
-  updateFieldIfNotNull('Gyroscope_z', event.rotationRate.alpha);
-  updateFieldIfNotNull('Gyroscope_x', event.rotationRate.beta);
-  updateFieldIfNotNull('Gyroscope_y', event.rotationRate.gamma);
+//   updateFieldIfNotNull('Gyroscope_z', event.rotationRate.alpha);
+//   updateFieldIfNotNull('Gyroscope_x', event.rotationRate.beta);
+//   updateFieldIfNotNull('Gyroscope_y', event.rotationRate.gamma);
   //incrementEventCount();
 }
 
@@ -114,7 +109,6 @@ demo_button.onclick = function(e) {
     myShakeEvent.stop();
     GA.stop();
     shakeDict = shakeDict1;
-    //ToyPiano.stop();
     is_running = false;
   }else{
     setTimeout(function(){
@@ -136,7 +130,6 @@ demo_button.onclick = function(e) {
     myShakeEvent.start();
     gainNode.gain.rampTo(1, 0.1);
     sampler.toDestination();
-    //ToyPiano.start();
     is_running = true;
   }
 };
@@ -159,6 +152,6 @@ var myShakeEvent = new Shake({
 //function to call when shake occurs
 function shakeEventDidOccur () {
   shakeDict[Math.floor(Math.random() * 27)].start();
-  //shakeDict[Math.floor(Math.random() * 27)].playbackRate = (scaleValue(accel, [9, 30], [1.8, 0.7]));
+  shakeDict[Math.floor(Math.random() * 27)].playbackRate = (scaleValue(accel, [9, 30], [1.8, 0.7]));
   //alert('shake!');
 }
