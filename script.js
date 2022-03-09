@@ -3,7 +3,6 @@ document.documentElement.addEventListener('mousedown', () => {
   if (Tone.context.state !== 'running') Tone.context.resume();
 });
 
-const filter = new Tone.Filter(20000, "lowpass");
 const Cough1 = new Tone.Player("https://monlim.github.io/AccelTrial/Audio/Cough1.mp3").toDestination();
 const Cough2 = new Tone.Player("https://monlim.github.io/AccelTrial/Audio/Cough2.mp3").toDestination();
 const Cough3 = new Tone.Player("https://monlim.github.io/AccelTrial/Audio/Cough3.mp3").toDestination();
@@ -18,7 +17,7 @@ const Orn1 = new Tone.Player("https://monlim.github.io/AccelTrial/Audio/Orn1.mp3
 const Orn2 = new Tone.Player("https://monlim.github.io/AccelTrial/Audio/Orn2.mp3").toDestination();
 const pitchShift = new Tone.PitchShift(0);
 const GA = new Tone.Player("https://monlim.github.io/AccelTrial/Audio/GA1.mp3");
-GA.chain(pitchShift, filter, Tone.Destination);
+GA.chain(pitchShift, Tone.Destination);
 GA.loop = true;
 /*const gainNode = new Tone.Gain(0).toDestination();
 const ToyPiano = new Tone.GrainPlayer("https://monlim.github.io/AccelTrial/Audio/ToyPiano.mp3").connect(gainNode);
@@ -41,7 +40,6 @@ function handleOrientation(event) {
   if (30 <= event.beta && event.beta < 60) pitchShift.pitch = 7;
   if (60 <= event.beta && event.beta < 100) pitchShift.pitch = 12;
   if (event.beta >= 100) pitchShift.pitch = 16;
-  filter.frequency.rampTo((scaleValue(event.alpha, [-180, 180], [20000, 1000])), 10);
   
   //incrementEventCount();
 }
