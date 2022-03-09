@@ -103,7 +103,6 @@ demo_button.onclick = function(e) {
     }, 30000);
     setTimeout(function(){
       GA.start();
-      sampler.disconnect();
     }, 40000);
     setTimeout(function(){
       gainNode.gain.rampTo(0, 3);
@@ -116,7 +115,6 @@ demo_button.onclick = function(e) {
     //demo_button.classList.add('btn-danger');
     myShakeEvent.start();
     gainNode.gain.rampTo(1, 0.1);
-    sampler.toDestination();
     is_running = true;
   }
 };
