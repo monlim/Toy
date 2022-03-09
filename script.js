@@ -16,10 +16,11 @@ const Ring5 = new Tone.Player("https://monlim.github.io/AccelTrial/Audio/Ring5.m
 const Orn1 = new Tone.Player("https://monlim.github.io/AccelTrial/Audio/Orn1.mp3").toDestination();
 const Orn2 = new Tone.Player("https://monlim.github.io/AccelTrial/Audio/Orn2.mp3").toDestination();
 const pitchShift = new Tone.PitchShift(0);
+const gain = new Tone.Gain.toDestination();
 const GA = new Tone.Player("https://monlim.github.io/AccelTrial/Audio/GA1.mp3");
-GA.chain(pitchShift, Tone.Destination);
+GA.chain(pitchShift, gain);
 GA.loop = true;
-/*const gainNode = new Tone.Gain(0).toDestination();
+/*const gainNode = new Tone.Gain(1).toDestination();
 const ToyPiano = new Tone.GrainPlayer("https://monlim.github.io/AccelTrial/Audio/ToyPiano.mp3").connect(gainNode);
 ToyPiano.loop = true;*/
 
@@ -67,7 +68,7 @@ function handleMotion(event) {
   
   accel = event.acceleration.x**2 + event.acceleration.y**2 + event.acceleration.z**2;
   updateFieldIfNotNull('All', accel);
-  GA.volume.value = scaleValue(accel, [0, 5], [-24, 0]);
+  GA.volume.value = scaleValue(accel, [0, 6], [-24, 0]);
  
   
   
@@ -112,6 +113,9 @@ demo_button.onclick = function(e) {
     setTimeout(function(){
       GA.start();
     }, 40000);
+    setTimeout(function(){
+      gainNode.gain.rampTo(0, 3);
+    }, 180000);
     window.addEventListener("devicemotion", handleMotion);
     window.addEventListener("deviceorientation", handleOrientation);
     window.addEventListener('shake', shakeEventDidOccur, false); 
@@ -135,13 +139,13 @@ let powerScale = d3.scalePow()
   .exponent(1.4).domain([0, 6]).range([0, 1]).clamp(true);
 
 var myShakeEvent = new Shake({
-    threshold: 10, // optional shake strength threshold
+    threshold: 9, // optional shake strength threshold
     timeout: 1000 // optional, determines the frequency of event generation
 });
 
 //function to call when shake occurs
 function shakeEventDidOccur () {
   shakeDict[Math.floor(Math.random() * 27)].start();
-  //shakeDict[Math.floor(Math.random() * 27)].playbackRate = (scaleValue(accel, [10, 30], [1.8, 0.7]));
+  //shakeDict[Math.floor(Math.random() * 27)].playbackRate = (scaleValue(accel, [9, 30], [1.8, 0.7]));
   //alert('shake!');
 }
