@@ -1,7 +1,7 @@
 a {
   background-color: none;
   font-family: Arial, Helvetica, sans-serif;
-  font-size: 1em;
+  font-size: 5vw;
   color: white;
   position: fixed;
   top: 50%;
@@ -17,8 +17,8 @@ a {
 
 .circle {
   border-radius: 50%;
-  width: 6em;
-  height: 6em;
+  width: 30vw;
+  height: 30vw;
   background: green;
   position: fixed;
   top: 50%;
