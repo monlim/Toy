@@ -223,10 +223,10 @@ var myShakeEvent = new Shake({
 //function to call when shake occurs
 function shakeEventDidOccur() {
   shakeDict[Math.floor(Math.random() * 27)].start();
-  shakeDict[Math.floor(Math.random() * 27)].playbackRate = scaleValue(
-    accel,
-    [9, 30],
-    [1.8, 0.7]
-  );
+//   shakeDict[Math.floor(Math.random() * 27)].playbackRate = scaleValue(
+//     accel,
+//     [9, 30],
+//     [1.8, 0.7]
+//   );
   //alert('shake!');
 }
