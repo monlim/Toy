@@ -15,10 +15,9 @@ const Ring4 = new Tone.Player("https://monlim.github.io/AccelTrial/Audio/Ring4.m
 const Ring5 = new Tone.Player("https://monlim.github.io/AccelTrial/Audio/Ring5.mp3").toDestination();
 const Orn1 = new Tone.Player("https://monlim.github.io/AccelTrial/Audio/Orn1.mp3").toDestination();
 const Orn2 = new Tone.Player("https://monlim.github.io/AccelTrial/Audio/Orn2.mp3").toDestination();
-const pitchShift = new Tone.PitchShift(0);
 const gainNode = new Tone.Gain(0).toDestination();
-const GA = new Tone.Player("https://monlim.github.io/AccelTrial/Audio/GA1.mp3");
-GA.chain(pitchShift, gainNode);
+const pitchShift = new Tone.PitchShift(0).connect(gainNode);
+const GA = new Tone.Player("https://monlim.github.io/AccelTrial/Audio/GA1.mp3").connect(pitchShift);
 GA.loop = true;
 
 const shakeDict1 = {1: Ring1, 2: Ring2, 3: Ring3, 4: Ring5, 5: Cough1, 6: Cough2, 7: Cough3, 8: Cough4, 9: Ring1, 10: Ring1, 11: Ring2, 12: Ring2, 13: Ring4, 14: Ring4, 15: Ring4, 16: Cough1, 17: Cough1, 18: Cough3, 19: Cough3, 20: Cough4, 21: Cough4, 22: Cough1, 23: Ring1, 25: Cough5, 26: Cough5};
