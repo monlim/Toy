@@ -189,7 +189,7 @@ demo_button.onclick = function (e) {
     window.removeEventListener("shake", shakeEventDidOccur, false);
     demo_button.innerHTML = "START";
     document.getElementById("circle").style.background = "green";
-    myShakeEvent.stop();
+    //myShakeEvent.stop();
     Tone.Transport.stop();
     gainNode.gain.rampTo(0, 0.1);
     GA.stop();
@@ -212,7 +212,7 @@ demo_button.onclick = function (e) {
     window.addEventListener("shake", shakeEventDidOccur, false);
     document.getElementById("start_demo").innerHTML = "STOP";
     document.getElementById("circle").style.background = "red";
-    myShakeEvent.start();
+    //myShakeEvent.start();
     Tone.Transport.start();
     //gainNode.gain.rampTo(1, 0.1);
     is_running = true;
