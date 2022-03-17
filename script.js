@@ -127,10 +127,10 @@ function handleOrientation(event) {
   // updateFieldIfNotNull('Orientation_b', event.beta);
   // updateFieldIfNotNull('Orientation_g', event.gamma);
   if (event.beta < 10) pitchShift.pitch = 0;
-  if (10 <= event.beta && event.beta < 30) pitchShift.pitch = 4;
-  if (30 <= event.beta && event.beta < 60) pitchShift.pitch = 7;
-  if (60 <= event.beta && event.beta < 100) pitchShift.pitch = 12;
-  if (event.beta >= 100) pitchShift.pitch = 16;
+  if (10 <= event.beta && event.beta < 30) pitchShift.pitch = 2;
+  if (30 <= event.beta && event.beta < 60) pitchShift.pitch = 4;
+  if (60 <= event.beta && event.beta < 100) pitchShift.pitch = 7;
+  if (event.beta >= 100) pitchShift.pitch = 12;
 
   //incrementEventCount();
 }
@@ -203,6 +203,10 @@ demo_button.onclick = function (e) {
       GA.start();
       gainNode.gain.rampTo(1, 1);
     }, 40000);
+    setTimeout(function () {
+      myShakeEvent.threshold = 1;
+      myShake.Event.timeout = 300;
+    }, 90000);
     setTimeout(function () {
       gainNode.gain.rampTo(0, 3);
     }, 180000);
