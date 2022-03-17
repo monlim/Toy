@@ -198,11 +198,11 @@ demo_button.onclick = function (e) {
   } else {
     setTimeout(function () {
       shakeDict = shakeDict1;
-    }, 30000);
+    }, 50000);
     setTimeout(function () {
       GA.start();
       gainNode.gain.rampTo(1, 1);
-    }, 40000);
+    }, 60000);
     setTimeout(function () {
       myShakeEvent.threshold = 1;
       myShake.Event.timeout = 300;
