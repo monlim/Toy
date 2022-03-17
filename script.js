@@ -234,8 +234,8 @@ function scaleValue(value, from, to) {
 //   .clamp(true);
 
 var myShakeEvent = new Shake({
-  //threshold: 10, // optional shake strength threshold
-  //timeout: 1000, // optional, determines the frequency of event generation
+  threshold: 10, // optional shake strength threshold
+  timeout: 1000, // optional, determines the frequency of event generation
 });
 
 //function to call when shake occurs
