@@ -4,39 +4,39 @@ document.documentElement.addEventListener("mousedown", () => {
 });
 
 const Cough1 = new Tone.Player(
-  "https://monlim.github.io/AccelTrial/Audio/Cough1.mp3"
+  "https://monlim.github.io/Toy/Audio/Cough1.mp3"
 ).toDestination();
 const Cough2 = new Tone.Player(
-  "https://monlim.github.io/AccelTrial/Audio/Cough2.mp3"
+  "https://monlim.github.io/Toy/Audio/Cough2.mp3"
 ).toDestination();
 const Cough4 = new Tone.Player(
-  "https://monlim.github.io/AccelTrial/Audio/Cough4.mp3"
+  "https://monlim.github.io/Toy/Audio/Cough4.mp3"
 ).toDestination();
 const Ring1 = new Tone.Player(
-  "https://monlim.github.io/AccelTrial/Audio/Ring1.mp3"
+  "https://monlim.github.io/Toy/Audio/Ring1.mp3"
 ).toDestination();
 const Ring2 = new Tone.Player(
-  "https://monlim.github.io/AccelTrial/Audio/Ring2.mp3"
+  "https://monlim.github.io/Toy/Audio/Ring2.mp3"
 ).toDestination();
 const Ring3 = new Tone.Player(
-  "https://monlim.github.io/AccelTrial/Audio/Ring3.mp3"
+  "https://monlim.github.io/Toy/Audio/Ring3.mp3"
 ).toDestination();
 const Ring5 = new Tone.Player(
-  "https://monlim.github.io/AccelTrial/Audio/Ring5.mp3"
+  "https://monlim.github.io/Toy/Audio/Ring5.mp3"
 ).toDestination();
 const Orn1 = new Tone.Player(
-  "https://monlim.github.io/AccelTrial/Audio/Orn1.mp3"
+  "https://monlim.github.io/Toy/Audio/Orn1.mp3"
 ).toDestination();
 const Orn2 = new Tone.Player(
-  "https://monlim.github.io/AccelTrial/Audio/Orn2.mp3"
+  "https://monlim.github.io/Toy/Audio/Orn2.mp3"
 ).toDestination();
 const Orn5 = new Tone.Player(
-  "https://monlim.github.io/AccelTrial/Audio/Orn5.mp3"
+  "https://monlim.github.io/Toy/Audio/Orn5.mp3"
 ).toDestination();
 const gainNode = new Tone.Gain(0).toDestination();
 const pitchShift = new Tone.PitchShift(0).connect(gainNode);
 const GA = new Tone.Player(
-  "https://monlim.github.io/AccelTrial/Audio/GA1.mp3"
+  "https://monlim.github.io/Toy/Audio/GA1.mp3"
 ).connect(pitchShift);
 GA.loop = true;
 const sampler = new Tone.Sampler({
@@ -46,7 +46,7 @@ const sampler = new Tone.Sampler({
     G5: "G5.mp3",
     D6: "D6.mp3",
   },
-  baseUrl: "https://monlim.github.io/AccelTrial/Audio/",
+  baseUrl: "https://monlim.github.io/Toy/Audio/",
 }).toDestination();
 
 const shakeDict1 = {
